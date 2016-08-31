@@ -2,7 +2,7 @@
   "name": "factify_chrome_extension_nativeapp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/sunsagong/factify_chrome_extension_nativeapp/issues"
   },
-  "homepage": "https://github.com/sunsagong/factify_chrome_extension_nativeapp#readme"
+  "homepage": "https://github.com/sunsagong/factify_chrome_extension_nativeapp#readme",
+  "devDependencies": {
+    "electron-prebuilt": "^1.3.4"
+  }
 }
