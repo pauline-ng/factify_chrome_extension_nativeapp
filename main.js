@@ -1,0 +1,31 @@
+'use strict';
+
+const electron = require("electron");
+
+// electron app controler
+const app = electron.app;
+
+// electron window controler
+const BrowserWindow = electron.BrowserWindow;
+
+// Let main window be global variable so it won't be GC-ed.
+let mainWindow;
+
+// End the app when all the window is closed.
+app.on('window-all-closed', function() {
+  if (process.platform != 'darwin') {
+    app.quit();
+  }
+});
+
+// Entry point - to be executed right after Electron is initialized.
+app.on('ready', function() {
+  // Render main window.
+  mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
+
+  // Terminate the window when it's closed.
+  mainWindow.on('closed', function() {
+    mainWindow = null;
+  });
+});
