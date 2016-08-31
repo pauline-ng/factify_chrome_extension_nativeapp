@@ -20,6 +20,9 @@ app.on('window-all-closed', function() {
 
 // Entry point - to be executed right after Electron is initialized.
 app.on('ready', function() {
+  // Show developer tool to debug
+  mainWindow.toggleDevTools();
+
   // Render main window.
   mainWindow = new BrowserWindow({width: 800, height: 600});
   mainWindow.loadURL('file://' + __dirname + '/index.html');
