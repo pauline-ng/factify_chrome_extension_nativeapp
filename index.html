@@ -1,18 +1,52 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>Installing Factify Chrome</title>
-  <script src="deployJava.js"/>
+  
 </head>
+
+<script src="http://java.com/js/deployJava.js"></script>
+<header>
+</header>
+
 <body>
 
+<br>
 <a href="step1.html">Step1: Java check by using deployJava.js</a>
 <br>http://docs.oracle.com/javase/6/docs/technotes/guides/jweb/deployment_advice.html#deplToolkit<br>
+
+<br><br>
+
+<script>
+
+	if(!deployJava.versionCheck("1.8")){
+		document.write("JRE 1.8 is NOT installed!");
+
+		deployJava.installLatestJRE();
+
+	}else{
+		document.write("JRE 1.8 is installed!");
+		deployJava.installJRE("1.8");
+		deployJava.getJREs(); // this does not work somehow...
+	}
+
+</script>
+
+<br><br>
 <a href="step2.html">Step2: expand host_program folder under %AppData% - it's fixed</a>
+<br><br>
+
 <br><br>
 <a href="step3.html">Step3: run install_host.bat (windows) or install_host.sh (mac/linux) - uninstall_host.bat/sh first is better</a>
 
 
 </body>
+
+<footer>	
+</footer>
+
+
+
 </html>
