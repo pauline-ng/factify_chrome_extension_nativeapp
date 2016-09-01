@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Installing Factify Chrome</title>
-  
 </head>
 
 <script src="http://java.com/js/deployJava.js"></script>
@@ -36,7 +35,21 @@
 <a href="step2.html">Step2: expand host_program folder under %AppData% - it's fixed</a>
 <br><br>
 
+<script>
+// Get User Home directory path
+var dir_home = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
+var dir_tmp = dir_home + "\\factify_chrome";
+document.write("Use tmp folder: " + dir_tmp);
 
+// Get host_program directory path
+var dir_host = __dirname + "\\host_program";
+document.write("host program folder: " + dir_host);
+
+// Copy host_program under user home
+var fs = require('fs-extra');
+fs.copySync(dir_host, dir_tmp);
+
+</script>
 
 <br><br>
 <a href="step3.html">Step3: run install_host.bat (windows) or install_host.sh (mac/linux) - uninstall_host.bat/sh first is better</a>
@@ -49,13 +62,13 @@
 	if(os == "Win32"){
 
 		//var file = __dirname + "\\host_program\\factify_launcher.bat";
-		var file = __dirname + "\\host_program\\install_host.bat";
+		var host_install_file = dir_tmp + "\\install_host.bat";
 		
-		document.write("<br> file path: <br>" + file + "<br>");
+		document.write("<br> file path: <br>" + host_install_file + "<br>");
 		//console.log(cmd);
 
 		var spawn = require('child_process').spawn,
-		ls    = spawn('cmd.exe', ['/c', file]);
+		ls    = spawn('cmd.exe', ['/c', host_install_file]);
 
 		ls.stdout.on('data', function (data) {
 		console.log('stdout: ' + data);
