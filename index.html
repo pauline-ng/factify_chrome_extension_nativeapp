@@ -48,16 +48,25 @@
 	let os = navigator.platform;
 	if(os == "Win32"){
 
-		var cmd = "java -jar " + __dirname + "\\host_program\\factify.jar" + " chrome";
+		//var file = __dirname + "\\host_program\\factify_launcher.bat";
+		var file = __dirname + "\\host_program\\install_host.bat";
 		
-		document.write("<br> executed command: <br>" + cmd + "<br>");
+		document.write("<br> file path: <br>" + file + "<br>");
 		//console.log(cmd);
 
-		var exec = require('child_process').exec;
-		exec(cmd, function(error, stdout, stderr) {
-		    if (error != null) {
-		        console.log(error);
-		    }
+		var spawn = require('child_process').spawn,
+		ls    = spawn('cmd.exe', ['/c', file]);
+
+		ls.stdout.on('data', function (data) {
+		console.log('stdout: ' + data);
+		});
+
+		ls.stderr.on('data', function (data) {
+		console.log('stderr: ' + data);
+		});
+
+		ls.on('exit', function (code) {
+		console.log('child process exited with code ' + code);
 		});
 
 
