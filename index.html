@@ -15,8 +15,6 @@
 
 <br>
 <a href="step1.html">Step1: Java check by using deployJava.js</a>
-<br>http://docs.oracle.com/javase/6/docs/technotes/guides/jweb/deployment_advice.html#deplToolkit<br>
-
 <br><br>
 
 <script>
@@ -24,7 +22,7 @@
 	if(!deployJava.versionCheck("1.8")){
 		document.write("JRE 1.8 is NOT installed!");
 
-		deployJava.installLatestJRE();
+		deployJava.installLatestJRE(); // TODO: ask user to redirect
 
 	}else{
 		document.write("JRE 1.8 is installed!");
@@ -38,15 +36,53 @@
 <a href="step2.html">Step2: expand host_program folder under %AppData% - it's fixed</a>
 <br><br>
 
+
+
 <br><br>
 <a href="step3.html">Step3: run install_host.bat (windows) or install_host.sh (mac/linux) - uninstall_host.bat/sh first is better</a>
+<br><br>
 
+<script>
+
+	document.write("Your Operating System is " + navigator.platform);
+	let os = navigator.platform;
+	if(os == "Win32"){
+
+		var remote = require('electron').remote;
+		var app = remote.app;
+
+		// Get own path
+		var cwd = app.getAppPath();
+
+		//var file_path = cwd + "\\host_program\\factify_launcher.bat";
+		var file_path = "java -jar " + cwd + "\\host_program\\factify.jar" + " chrome";
+		var cmd =  file_path;
+		
+		document.write("file_path: " + file_path + "<br>");
+		document.write("cmd: " + cmd + "<br>");
+		console.log(cmd);
+
+		var exec = require('child_process').execFile;
+		exec(cmd, function(error, stdout, stderr) {
+		    if (error != null) {
+		        console.log(error);
+		    }
+		});
+
+	}else if(os == "Mac" || os == "Linux"){
+		// Mac or Linux
+
+	}else{
+		// Cannot recognize your platform.
+
+	}
+
+
+</script>
 
 </body>
 
 <footer>	
 </footer>
-
-
 
 </html>
