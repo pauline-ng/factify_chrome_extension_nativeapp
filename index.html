@@ -48,19 +48,10 @@
 	let os = navigator.platform;
 	if(os == "Win32"){
 
-		// var remote = require('electron').remote;
-		// var app = remote.app;
-
-		// // Get own path
-		// var cwd = app.getAppPath();
-
-		//var file_path = __dirname + "\\host_program\\factify_launcher.bat";
-		var file_path = "java -jar " + __dirname + "\\host_program\\factify.jar" + " chrome";
-		var cmd =  file_path;
+		var cmd = "java -jar " + __dirname + "\\host_program\\factify.jar" + " chrome";
 		
-		document.write("file_path: " + file_path + "<br>");
-		document.write("cmd: " + cmd + "<br>");
-		console.log(cmd);
+		document.write("<br> executed command: <br>" + cmd + "<br>");
+		//console.log(cmd);
 
 		var exec = require('child_process').exec;
 		exec(cmd, function(error, stdout, stderr) {
