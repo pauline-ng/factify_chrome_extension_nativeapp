@@ -24,7 +24,7 @@ app.on('ready', function() {
   //mainWindow.toggleDevTools();
 
   // Render main window.
-  mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow = new BrowserWindow({width: 500, height: 500});
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
 	//mainWindow.toggleDevTools();

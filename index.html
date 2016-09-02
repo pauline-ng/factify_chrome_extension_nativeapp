@@ -1,102 +1,105 @@
-<!DOCTYPE html>
-<html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
+  </head><body>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="container">
+            <img src="./img/logo_factpub.png" class="center-block img-responsive">
+            <br>
+            <a class="btn btn-primary" onclick="install()">Install</a>
+            <br>
+            <a class="btn btn-primary disabled">Uninstall</a>
+            <br>
+            <a href="step1.html">Step1: Java check by using deployJava.js</a>
+            <br>
+            <br>
+            <script>
+              const shell = require('electron').shell
+                    	
+                    	if(!deployJava.versionCheck("1.8")){
+                    		document.write("JRE 1.8 is NOT installed!");
+                    		shell.openExternal('https://java.com/download/') // use external link instead of main window
+                    		// deployJava.installLatestJRE(); // TODO: ask user to redirect
+                    
+                    	}else{
+                    		document.write("JRE 1.8 is installed!");
+                    		deployJava.installJRE("1.8");
+                    		// deployJava.getJREs(); // this does not work somehow...
+                    	}
+            </script>
+            <br>
+            <br>
+            <a href="step2.html">Step2: expand host_program folder under %AppData% - it's fixed</a>
+            <br>
+            <br>
+            <script>
+              // Get User Home directory path
+                    const os = require('os')
+                    const dir_home = os.homedir()
+                    
+                    //var dir_home = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
+                    var dir_tmp = dir_home + "\\factify_chrome";
+                    document.write("Use tmp folder: " + dir_tmp);
+                    
+                    // Get host_program directory path
+                    var dir_host = __dirname + "\\host_program";
+                    document.write("host program folder: " + dir_host);
+                    
+                    // Copy host_program under user home
+                    var fs = require('fs-extra');
+                    fs.copySync(dir_host, dir_tmp);
+            </script>
+            <br>
+            <br>
+            <a href="step3.html">Step3: run install_host.bat (windows) or install_host.sh (mac/linux) - uninstall_host.bat/sh first is better</a>
+            <br>
+            <br>
+            <script>
+              document.write("Your Operating System is " + navigator.platform);
+                    	let os = navigator.platform;
+                    	if(os == "Win32"){
+                    
+                    		//var file = __dirname + "\\host_program\\factify_launcher.bat";
+                    		var host_install_file = dir_tmp + "\\install_host.bat";
+                    		
+                    		document.write("<br> file path: <br>" + host_install_file + "<br>");
+                    		//console.log(cmd);
+                    
+                    		var spawn = require('child_process').spawn,
+                    		ls    = spawn('cmd.exe', ['/c', host_install_file]);
+                    
+                    		ls.stdout.on('data', function (data) {
+                    		console.log('stdout: ' + data);
+                    		});
+                    
+                    		ls.stderr.on('data', function (data) {
+                    		console.log('stderr: ' + data);
+                    		});
+                    
+                    		ls.on('exit', function (code) {
+                    		console.log('child process exited with code ' + code);
+                    		});
+                    
+                    
+                    	}else if(os == "Mac" || os == "Linux"){
+                    		// Mac or Linux
+                    		console.log("it doesn't support Mac/Linux yet");
+                    
+                    	}else{
+                    		// Cannot recognize your platform.
+                    		console.log("unknown error has occured.");
+                    	}
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  
 
-<head>
-  <meta charset="UTF-8">
-  <title>Installing Factify Chrome</title>
-</head>
-
-<script src="http://java.com/js/deployJava.js"></script>
-<header>
-</header>
-
-<body>
-
-<br>
-<a href="step1.html">Step1: Java check by using deployJava.js</a>
-<br><br>
-
-<script>
-
-	if(!deployJava.versionCheck("1.8")){
-		document.write("JRE 1.8 is NOT installed!");
-
-		deployJava.installLatestJRE(); // TODO: ask user to redirect
-
-	}else{
-		document.write("JRE 1.8 is installed!");
-		deployJava.installJRE("1.8");
-		deployJava.getJREs(); // this does not work somehow...
-	}
-
-</script>
-
-<br><br>
-<a href="step2.html">Step2: expand host_program folder under %AppData% - it's fixed</a>
-<br><br>
-
-<script>
-// Get User Home directory path
-var dir_home = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
-var dir_tmp = dir_home + "\\factify_chrome";
-document.write("Use tmp folder: " + dir_tmp);
-
-// Get host_program directory path
-var dir_host = __dirname + "\\host_program";
-document.write("host program folder: " + dir_host);
-
-// Copy host_program under user home
-var fs = require('fs-extra');
-fs.copySync(dir_host, dir_tmp);
-
-</script>
-
-<br><br>
-<a href="step3.html">Step3: run install_host.bat (windows) or install_host.sh (mac/linux) - uninstall_host.bat/sh first is better</a>
-<br><br>
-
-<script>
-
-	document.write("Your Operating System is " + navigator.platform);
-	let os = navigator.platform;
-	if(os == "Win32"){
-
-		//var file = __dirname + "\\host_program\\factify_launcher.bat";
-		var host_install_file = dir_tmp + "\\install_host.bat";
-		
-		document.write("<br> file path: <br>" + host_install_file + "<br>");
-		//console.log(cmd);
-
-		var spawn = require('child_process').spawn,
-		ls    = spawn('cmd.exe', ['/c', host_install_file]);
-
-		ls.stdout.on('data', function (data) {
-		console.log('stdout: ' + data);
-		});
-
-		ls.stderr.on('data', function (data) {
-		console.log('stderr: ' + data);
-		});
-
-		ls.on('exit', function (code) {
-		console.log('child process exited with code ' + code);
-		});
-
-
-	}else if(os == "Mac" || os == "Linux"){
-		// Mac or Linux
-
-	}else{
-		// Cannot recognize your platform.
-
-	}
-
-
-</script>
-
-</body>
-
-<footer>	
-</footer>
-
-</html>
+</body></html>
