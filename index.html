@@ -1,93 +1,146 @@
 <html><head>
     <meta charset="utf-8">
     <title>Factify Chrome Installer</title>
-    <script src="http://java.com/js/deployJava.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="deployJava.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+    <link href="font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="bootstrap.css" rel="stylesheet" type="text/css">
+    <!-- Enable JavaScript run on Windows 
+    <script>
+      window.nodeRequire = require;
+      delete window.require;
+      delete window.exports;
+      delete window.module;
+    </script>
+    -->
+
     <script>
       // Get User Home directory path
-      const os = require('os')
-      const dir_home = os.homedir()
-
-      //var dir_home = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
-      let dir_tmp = dir_home + "\\factify_chrome";
-      console.log("Use tmp folder: " + dir_tmp);
-
-      // Get host_program directory path
-      var dir_host = __dirname + "\\host_program";
-      console.log("host program folder: " + dir_host);
-
-      // Copy host_program under user home
-      var fs = require('fs-extra');
-      
-      //Install host program
-      function Install(){
-            //Step1: Java check by using deployJava.js
-            			const shell = require('electron').shell
-                                	
-                        if(!deployJava.versionCheck("1.8")){
-                          console.log("JRE 1.8 is NOT installed!");
-                          shell.openExternal('https://java.com/download/') // use external link instead of main window
-                          // deployJava.installLatestJRE(); // TODO: ask user to redirect
-            
-                        }else{
-                          console.log("JRE 1.8 is installed!");
-                          deployJava.installJRE("1.8");
-                          // deployJava.getJREs(); // this does not work somehow...
-                        }
-                          //Step2: expand host_program folder under %AppData% - it's fixed
-
-                          fs.copySync(dir_host, dir_tmp);
-                          
-                  
-                  			
-            			//Step3: run install_host.bat (windows) or install_host.sh (mac/linux) - uninstall_host.bat/sh first is better      
-            			console.log("Your Operating System is " + navigator.platform);
-                  const platform = navigator.platform;
-                  if(platform == "Win32"){
-
-                    //var file = __dirname + "\\host_program\\factify_launcher.bat";
-                    var host_install_file = dir_tmp + "\\install_host.bat";
-
-                    console.log("<br> file path: <br>" + host_install_file + "<br>");
-                    //console.log(cmd);
-
-                    var spawn = require('child_process').spawn,
-                        ls    = spawn('cmd.exe', ['/c', host_install_file]);
-
-                    ls.stdout.on('data', function (data) {
-                      console.log('stdout: ' + data);
-                    });
-
-                    ls.stderr.on('data', function (data) {
-                      console.log('stderr: ' + data);
-                    });
-
-                    ls.on('exit', function (code) {
-                      console.log('child process exited with code ' + code);
-                    });
-
-
-                  }else if(os == "Mac" || os == "Linux"){
-                    // Mac or Linux
-                    console.log("it doesn't support Mac/Linux yet");
-
-                  }else{
-                    // Cannot recognize your platform.
-                    console.log("unknown error has occured.");
-                  }
-      }
-      
-		// Uninstall host_program
-      function Uninstall(){
-      	   
-        // TODO: run uninstall_host.bat
-
-        fs.removeSync(dir_tmp);
+              const os = require('os')
+              const dir_home = os.homedir()
         
-		}
+              //var dir_home = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
+              let dir_tmp = dir_home + "\\factify_chrome";
+              console.log("Use tmp folder: " + dir_tmp);
+        
+              // Get host_program directory path
+              var dir_host = __dirname + "\\host_program";
+              console.log("host program folder: " + dir_host);
+        
+              // Copy host_program under user home
+              var fs = require('fs-extra');
+              
+
+              //Install host program
+              function Install(){
+                    //Step1: Java check by using deployJava.js
+                    			
+                                        	
+                                if(!deployJava.versionCheck("1.8")){
+                                  //console.log("JRE 1.8 is NOT installed!");
+                                  const shell = require('electron').shell
+                                  shell.openExternal('https://java.com/download/') // use external link instead of main window
+                                  // deployJava.installLatestJRE(); // TODO: ask user to redirect
+                                  
+                                  $(function(){
+                                    $("#list_1").text("JRE 1.8 is NOT installed!")
+                                  });
+
+                                }else{
+                                  //console.log("JRE 1.8 is installed!");
+                                  deployJava.installJRE("1.8");
+                                  // deployJava.getJREs(); // this does not work somehow...
+
+                                  $(function(){
+                                    $("#list_1").text("JRE 1.8 is installed!")
+                                  });
+
+                                }                                  
+                          
+                    //Step2: Get the size of the host program and show dialogue to the user.
+
+                          function bytesToSize(bytes) {
+                             var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                             if (bytes == 0) return '0 Byte';
+                             var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+                             return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+                          };
+
+                          // TODO: Sums up all the contents size under host_program instead of return factify.jar's.
+                          var size_host_program = bytesToSize(fs.statSync(dir_host + "\\factify.jar").size);
+
+                          console.log(size_host_program);
+
+
+                          alert("it will require " + size_host_program + " on your local drive.");
+
+                          fs.copySync(dir_host, dir_tmp); // <-- execution
+
+                          $(function(){
+                              $("#list_2").text("host program (" + size_host_program + "MB) is copied to " + dir_tmp);
+                            });
+
+
+                    //Step3: run install_host.bat (windows) or install_host.sh (mac/linux) - uninstall_host.bat/sh first is better      
+                    			console.log("Your Operating System is " + navigator.platform);
+                          const platform = navigator.platform;
+                          if(platform == "Win32"){
+        
+                            //var file = __dirname + "\\host_program\\factify_launcher.bat";
+                            var host_install_file = dir_tmp + "\\install_host.bat";
+        
+                            console.log("<br> file path: <br>" + host_install_file + "<br>");
+                            //console.log(cmd);
+        
+                            var spawn = require('child_process').spawn,
+                                ls    = spawn('cmd.exe', ['/c', host_install_file]);
+        
+                            ls.stdout.on('data', function (data) {
+                              console.log('stdout: ' + data);
+                            });
+        
+                            ls.stderr.on('data', function (data) {
+                              console.log('stderr: ' + data);
+                            });
+        
+                            ls.on('exit', function (code) {
+                              console.log('child process exited with code ' + code);
+                            });
+        
+                            $(function(){
+                              $("#list_3").text("host program successfully registered!")
+                            });
+        
+        
+                          }else if(os == "Mac" || os == "Linux"){
+                            // Mac or Linux
+        
+                            alert("it doesn't support Mac/Linux yet");
+                            console.log("it doesn't support Mac/Linux yet");
+        
+                          }else{
+                            // Cannot recognize your platform.
+        
+                            alert("unknown error has occured.");
+                            console.log("unknown error has occured.");
+                          }
+              }
+              
+        		// Uninstall host_program
+              function Uninstall(){
+              	   
+                // TODO: run uninstall_host.bat
+        
+                fs.removeSync(dir_tmp);
+                alert("host program is uninstalled!");
+                 $(function(){
+                  $("#list_1").text("host program")
+                  $("#list_2").text("is successfully")
+                  $("#list_3").text("uninstalled.")
+                });
+                
+        		}
     </script>
   </head><body>
     <div class="section">
@@ -100,6 +153,15 @@
         <div class="row">
           <div class="container">
             <img src="./img/logo_factpub.png" class="center-block img-responsive">
+            <div class="row">
+              <div class="col-md-12">
+                <ol class="list-unstyled text-center">
+                  <li id="list_1">[Java Version Check]</li>
+                  <li id="list_2">[host program Size and Location]</li>
+                  <li id="list_3">[registration of host program]</li>
+                </ol>
+              </div>
+            </div>
             <div class="col text-center">
               <a class="btn btn-success" onclick="Install()">Install</a>
               <a class="btn btn-danger" onclick="Uninstall()">Uninstall</a>
