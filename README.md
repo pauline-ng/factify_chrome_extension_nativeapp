@@ -1,4 +1,4 @@
-# Host Program Installer for Factify Chrome Extension
+# Installer of the host program for Factify Chrome Extension
 
 ![installer_screenshot](http://factpub.org/img/factify_chrome_extension_host_program_installer_screenshot.png)
 
