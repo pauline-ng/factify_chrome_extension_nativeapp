@@ -1,1 +1,0 @@
-# factify_chrome_extension_nativeapp
