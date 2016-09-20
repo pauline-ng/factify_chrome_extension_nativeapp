@@ -2,7 +2,7 @@
 
 ![installer_screenshot](http://factpub.org/img/factify_chrome_extension_host_program_installer_screenshot.png)
 
-This is an installation kit of the host program for Factify Chrome Extension.
+This is an installation kit of the [host program](https://github.com/sunsagong/factify_chrome_extension_nativeapp/tree/master/host_program) for [Factify Chrome Extension](https://github.com/sunsagong/factify_chrome_extension.git).
 It simplifies the installation process of host program that requires [Native Messaging Protocol](https://developer.chrome.com/extensions/nativeMessaging) with only few clicks.
 
 Requirement
