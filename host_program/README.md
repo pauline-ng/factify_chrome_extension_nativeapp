@@ -1,11 +1,13 @@
 # Host program for Factify Chrome Extension
 
 This host program is supposed to be installed by [the installer](https://github.com/sunsagong/factify_chrome_extension).
+
 It will use [Native Messaging Protocol](https://developer.chrome.com/extensions/nativeMessaging) to interact with the [Chrome Browser extension](https://github.com/sunsagong/factify_chrome_extension) as a part of [FactPub project](http://factpub.org).
 
 Requirement
 -----------
 [Java Version 1.8+](http://java.com/download)
+
 [Factify Chrome Extension](https://github.com/sunsagong/factify_chrome_extension.git)
 
 Issue
