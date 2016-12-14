@@ -1,3 +1,4 @@
+# No longer used because using graphical installer (November 2016)
 # Installer of the host program for Factify Chrome Extension
 
 ![installer_screenshot](http://factpub.org/img/factify_chrome_extension_host_program_installer_screenshot.png)
